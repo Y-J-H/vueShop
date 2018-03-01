@@ -130,29 +130,29 @@
       </div>
     </modal>
     <modal :mdShow="isAddAddrShow" @close="closeModal">
-      <ul slot="message">
+      <ul class="add-address-list" slot="message">
         <li>
           <label>
-            收件人： <input type="text" v-model="address.userName">
+            <span class="item">收件人：</span><input type="text" v-model="address.userName">
           </label>
         </li>
         <li>
           <label>
-            收货地址： <input type="text" v-model="address.streetName">
+            <span class="item">收货地址：</span><input type="text" v-model="address.streetName">
           </label>
         </li>
         <li>
           <label>
-            邮编： <input type="text" v-model="address.postCode">
+            <span class="item">邮编：</span><input type="text" v-model="address.postCode">
           </label>
         </li>
         <li>
           <label>
-            电话： <input type="text" v-model="address.tel">
+            <span class="item">电话：</span><input type="text" v-model="address.tel">
           </label>
         </li>
         <li>
-          <label>
+          <label class="checkbox-default">
             是否默认： <input type="checkbox" v-model="address.isDefault">
           </label>
         </li>
@@ -272,4 +272,15 @@ export default {
 </script>
 
 <style lang="css">
+  .add-address-list > li > label {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  .add-address-list .item {
+    width: 120px;
+    line-height: 50px;
+  }
+  .checkbox-default > input{
+    margin-top: 3px;
+  }
 </style>

@@ -17,7 +17,7 @@
               <dl class="filter-price">
                 <dt>价格:</dt>
                 <dd><a href="javascript:void(0)" @click="setPriceFilter('all')" v-bind:class="{'cur':priceChecked=='all'}">所有</a></dd>
-                <dd v-for="(item,index) in priceFilter">
+                <dd v-for="(item,index) in priceFilter" :key="'priceFilter' + index">
                   <a href="javascript:void(0)" @click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked==index}">{{item.startPrice}} - {{item.endPrice}}</a>
                 </dd>
               </dl>
@@ -27,7 +27,7 @@
             <div class="accessory-list-wrap">
               <div class="accessory-list col-4">
                 <ul>
-                  <li v-for="item in goodsList" @click="goDetail(item.productId)">
+                  <li v-for="(item, index) in goodsList" :key="'goodsList' + index" @click="goDetail(item.productId)">
                     <div class="pic">
                       <a href="#"><img v-lazy="'static/'+item.productImage" alt=""></a>
                     </div>

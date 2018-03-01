@@ -29,17 +29,25 @@
       <div class="navbar-right-container" style="display: flex;">
         <div class="navbar-menu-container">
           <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
-          <router-link to="/orders" v-if="nickName">我的订单</router-link>
+          <router-link to="/orders" class="navbar-link" v-if="nickName">我的订单</router-link>
           <a href="javascript:void(0)" class="navbar-link" @click="registerModalFlag=true" v-if="!nickName">注册</a>
           <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">登录</a>
           <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-else>退出</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count" v-text="cartCount" v-if="cartCount"></span>
-            <a class="navbar-link navbar-cart-link" href="/#/cart">
+            <a class="navbar-link navbar-cart-link" href="javascript:void(0)" @click="addCart">
               <svg class="navbar-cart-logo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
               </svg>
             </a>
+            <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+              <p slot="message">
+                请先登录
+              </p>
+              <div slot="btnGroup">
+                  <a class="btn btn--m" href="javascript:;" @click="mdShow = false">关闭</a>
+              </div>
+            </modal>
           </div>
         </div>
       </div>
@@ -98,13 +106,14 @@
         </div>
       </div>
     </div>
-    <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
+    <div class="md-overlay" v-if="loginModalFlag || registerModalFlag" @click="loginModalFlag=false"></div>
   </header>
 </template>
 
 <script>
 import '@/assets/css/header.css'
 import '@/assets/css/login.css'
+import Modal from '../components/Modal'
 import { mapState } from 'vuex'
 export default{
   data () {
@@ -114,11 +123,15 @@ export default{
       errorTip: false,
       loginModalFlag: false,
       registerModalFlag: false,
+      mdShow: false,
       register: {
         userName: '',
         userPwd: ''
       }
     }
+  },
+  components: {
+    Modal
   },
   computed: {
     ...mapState(['nickName', 'cartCount'])
@@ -187,6 +200,17 @@ export default{
           this.$store.commit('updateCartCount', res.result)
         }
       })
+    },
+    addCart () {
+      if (!this.nickName) {
+        this.mdShow = !this.mdShow
+      } else {
+        this.$router.push('/cart')
+      }
+    },
+    closeModal () {
+      this.mdShow = !this.mdShow
+      console.log('mdshow')
     }
   }
 }

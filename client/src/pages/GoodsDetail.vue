@@ -1,10 +1,18 @@
 <template lang="html">
-    <div class="">
-      商品详情页 {{ $route.params.productId }}
-      <img :src="'static/' + goods.productImage" alt="">
-      <span>{{ goods.productName }}</span>
-      <span>{{ goods.salePrice }}</span>
-      <button type="button" name="button" @click="addCart">加入购物车</button>
+    <div class="" :data-id="productId">
+      <nav-bread>
+        <span>商品详情页</span> 
+      </nav-bread>
+      <div class="product-detail">
+        <div class="product-img">
+          <img :src="'static/' + goods.productImage" alt="">
+        </div>
+        <div class="product-infor">
+          <h3>{{ goods.productName }}</h3>
+          <span class="product-price">&yen;{{ goods.salePrice }}</span>
+          <button class="product-addCart" type="button" name="button" @click="addCart">加入购物车</button>
+        </div>
+      </div>
 
       <modal v-bind:mdShow="mdShowCart" v-on:close="closeModal">
         <p slot="message">
@@ -22,8 +30,10 @@
 </template>
 
 <script>
+import Public from '../Public'
 import Modal from '@/components/Modal'
 export default {
+  mixins: [Public],
   components: {
     Modal
   },
@@ -45,7 +55,7 @@ export default {
       this.mdShowCart = false
     },
     getGoods () {
-      this.$http.get(`/goods/detail?productId=${this.productId}`)
+      this.$http.get(`/goods/detail?productId=${this.productId}`)      // 根据id获取商品详情
       .then(res => {
         console.log(res)
         res = res.data
