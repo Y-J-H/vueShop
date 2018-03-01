@@ -5,7 +5,7 @@
       </nav-bread>
       <div class="product-detail">
         <div class="product-img">
-          <img :src="'static/' + goods.productImage" alt="">
+          <img v-lazy="'static/' + goods.productImage" alt="">
         </div>
         <div class="product-infor">
           <h3>{{ goods.productName }}</h3>
@@ -13,6 +13,15 @@
           <button class="product-addCart" type="button" name="button" @click="addCart">加入购物车</button>
         </div>
       </div>
+
+      <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+        <p slot="message">
+          请先登录
+        </p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" href="javascript:;" @click="mdShow = false">关闭</a>
+          </div>
+      </modal>
 
       <modal v-bind:mdShow="mdShowCart" v-on:close="closeModal">
         <p slot="message">
@@ -40,6 +49,7 @@ export default {
   data () {
     return {
       productId: '',
+      mdShow: false,
       mdShowCart: false,
       goods: {
 
@@ -53,6 +63,7 @@ export default {
   methods: {
     closeModal () {
       this.mdShowCart = false
+      this.mdShow = false
     },
     getGoods () {
       this.$http.get(`/goods/detail?productId=${this.productId}`)      // 根据id获取商品详情
