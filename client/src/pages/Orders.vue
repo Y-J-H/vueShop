@@ -57,15 +57,15 @@
                 <li>编辑</li>
               </ul>
             </div>
-            <ul class="cart-item-list" v-for="order in orderList">
+            <ul class="cart-item-list" v-for="(order,index) in orderList" :key="'item' + index">
               <li :class="order.orderStatus === '1' ? 'blue' : 'gray'">
-                订单号：{{ order.orderId }}
-                订单状态：{{ order.orderStatus === '1' ? '已完成' : '已取消'}}
-                订单总价：{{ order.orderTotal | currency }}
-                时间：{{ order.createDate }}
-                <a href="#" @click="delCartConfirm(order.orderId)">取消订单</a>
+                <p class="order">订单号：{{ order.orderId }}</p>
+                <p class="order">订单状态：{{ order.orderStatus === '1' ? '已完成' : '已取消'}}</p>
+                <p class="order">订单总价：{{ order.orderTotal | currency }}</p>
+                <p class="order">时间：{{ order.createDate }}</p>
+                <a class="order" href="#" @click="delCartConfirm(order.orderId)">取消订单</a>
               </li>
-              <li v-for="item in order.goodsList">
+              <li v-for="(item,index) in order.goodsList" :key="'item' + index">
                 <div class="cart-tab-1">
                   <div class="cart-item-pic">
                     <img v-lazy="'/static/'+item.productImage" v-bind:alt="item.productName">
@@ -107,13 +107,17 @@
   </div>
 </template>
 <style media="screen" scoped>
+  .cart-item-list > li > .order {
+    display: table-cell;
+    padding: 8px;
+  }
   .cart-item-list > li.blue {
-    border: 1px dashed blue;
-    background: blue;
+    border: 1px dashed lightseagreen;
+    background: lightseagreen;
   }
   .cart-item-list > li.gray {
     border: 1px dashed gray;
-    background: gray;
+    background: #ccc;
   }
 </style>
 <script>

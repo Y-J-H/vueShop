@@ -187,10 +187,10 @@ export default {
       addressId: '',
       checkIndex: 0,
       address: {
-        userName: '吴先生',
-        streetName: '石景山实兴东街',
-        postCode: '100030',
-        tel: '18518381821',
+        userName: '',
+        streetName: '',
+        postCode: '',
+        tel: '',
         isDefault: false
       },
       isAddAddrShow: false
