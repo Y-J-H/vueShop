@@ -58,7 +58,7 @@
               </ul>
             </div>
             <ul class="cart-item-list">
-              <li v-for="item in cartList">
+              <li v-for="(item,index) in cartList" :key="'cart-item-list' + index">
                 <div class="cart-tab-1">
                   <div class="cart-item-check">
                     <a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked=='1'}" @click="editCart('checked', item)">
@@ -145,7 +145,7 @@ import Modal from '@/components/Modal'
 export default {
   data () {
     return {
-      cartList: [],
+      cartList: [],      // 存放购物车中的商品数据
       delItem: {},
       modalConfirm: false
     }
@@ -179,7 +179,7 @@ export default {
     }
   },
   methods: {
-    init () {
+    init () {       // 获取购物车数据
       this.$http.get('/users/cartList')
       .then(res => {
         res = res.data
@@ -189,7 +189,7 @@ export default {
         this.cartList = res.result
       })
     },
-    delCartConfirm (item) {
+    delCartConfirm (item) {    // 点击删除(就是小的垃圾框)时,将要删除的商品拿到，然后弹出确认框,点击确认触发delCart()方法，删除商品
       this.delItem = item
       this.modalConfirm = true
     },
@@ -203,12 +203,12 @@ export default {
         if (res.status === '0') {
           this.modalConfirm = false
           let delCount = this.delItem.productNum
-          this.$store.commit('updateCartCount', -delCount)
+          this.$store.commit('updateCartCount', -delCount)   // 更新store中的cartCount数据
           this.init()
         }
       })
     },
-    editCart (flag, item) {
+    editCart (flag, item) {     // 编辑购物车中商品,包括增加,减少,是否选中
       if (flag === 'add') {
         item.productNum++
       } else if (flag === 'minu') {
@@ -230,7 +230,7 @@ export default {
         }
       })
     },
-    toggleCheckAll () {
+    toggleCheckAll () {         // 控制全选或者全不选
       let flag = !this.checkAllFlag
       this.cartList.forEach(item => {
         item.checked = flag ? 1 : 0
@@ -243,7 +243,7 @@ export default {
         }
       })
     },
-    checkOut () {
+    checkOut () {      // 结算
       if (this.checkedCount > 0) {
         this.$router.push({
           path: '/address'
