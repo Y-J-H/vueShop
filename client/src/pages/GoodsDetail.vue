@@ -48,10 +48,10 @@ export default {
   },
   data () {
     return {
-      productId: '',
+      productId: '',    // 产品id
       mdShow: false,
       mdShowCart: false,
-      goods: {
+      goods: {          // 商品详情
 
       }
     }
@@ -65,17 +65,16 @@ export default {
       this.mdShowCart = false
       this.mdShow = false
     },
-    getGoods () {
+    getGoods () {    // 获取商品详情数据
       this.$http.get(`/goods/detail?productId=${this.productId}`)      // 根据id获取商品详情
       .then(res => {
-        console.log(res)
         res = res.data
         if (res.status === '0') {
           this.goods = res.result
         }
       })
     },
-    addCart () {
+    addCart () {    // 加入购物车
       this.$http.post('/goods/addCart', {productId: this.productId})
       .then(res => {
         res = res.data
