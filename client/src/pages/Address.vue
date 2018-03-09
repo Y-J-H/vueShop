@@ -179,14 +179,13 @@ export default {
   },
   data () {
     return {
-      limit: 3,
-      selectedAddrId: '',
+      limit: 3,                 // 默认显示4个地址
+      selectedAddrId: '',       // 选中的收货地址的id
       isMdShow: false,
-      addressList: [],
-      // 准备删除的地址编号
-      addressId: '',
-      checkIndex: 0,
-      address: {
+      addressList: [],          // 收货地址数据数组
+      addressId: '',            // 准备删除的地址的编号
+      checkIndex: 0,            // 默认选中0
+      address: {                // 新增的收货地址的信息
         userName: '',
         streetName: '',
         postCode: '',
@@ -200,7 +199,7 @@ export default {
     this.init()
   },
   computed: {
-    addressListFilter () {
+    addressListFilter () {         // 默认,截取4个地址显示,但当limit变化时,显示的地址数量就会动态变化, 从而达到全部显示,和显示部分的效果
       return this.addressList.slice(0, this.limit)
     }
   },
@@ -220,13 +219,14 @@ export default {
           this.checkIndex = 0
           this.addressList.forEach((item, index) => {
             if (item.isDefault) {
+              // 数组中两个数据交换位置(es6语法)
               [this.addressList[0], this.addressList[index]] = [this.addressList[index], this.addressList[0]]
             }
           })
         }
       })
     },
-    expand () {
+    expand () {    // 改变limit的大小,l类似于一个toggle效果,在最大和最小之间转换
       this.limit = this.limit === 3 ? this.addressList.length : 3
     },
     closeModal () {
@@ -237,12 +237,11 @@ export default {
       this.isMdShow = true
       this.addressId = addressId
     },
-    addAddress () {
+    addAddress () {    // 添加收货地址
       this.$http.post('/users/addAddress', this.address)
       .then(res => {
         res = res.data
         if (res.status === '0') {
-          console.log('添加成功')
           this.limit = this.addressList.length + 1
           this.closeModal()
           this.init()
