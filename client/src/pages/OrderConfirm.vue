@@ -54,7 +54,7 @@
               </ul>
             </div>
             <ul class="cart-item-list">
-              <li v-for="item in cartList" v-if="item.checked=='1'">
+              <li v-for="(item, index) in cartList" v-if="item.checked=='1'" :key="'cart-item-list' + index">
                 <div class="cart-tab-1">
                   <div class="cart-item-pic">
                     <img v-lazy="'/static/'+item.productImage" :alt="item.productName">

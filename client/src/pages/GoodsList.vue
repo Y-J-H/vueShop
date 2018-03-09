@@ -124,7 +124,7 @@ export default {
       var params = {
         page: this.page,
         pageSize: this.pageSize,
-        sort: this.sortFlag ? 1 : -1,
+        sort: this.sortFlag ? 1 : -1,     // 后台根据传入的1或-1来判断要返回的数据价格是从大到小,还是从小到大
         priceLevel: this.priceChecked
       }
       this.loading = true
@@ -149,39 +149,40 @@ export default {
       })
     },
     goDetail (productId) {
-      this.$router.push({
+      this.$router.push({        // 路由的重定向
         path: `/detail/${productId}`
       })
     },
-    sortGoods () {
+    sortGoods () {    // 按照商品价格给商品排序,升序,降序
       this.sortFlag = !this.sortFlag
       this.page = 1
       this.getGoodsList()
     },
-    setPriceFilter (index) {
+    setPriceFilter (index) {   // 设置价格区间
       this.busy = false
+      // 商品的价格区间有for遍历到页面上,根据返回的我们点击时获得的index,然后根据定义好的priceFilter来获取价格区间
       this.priceChecked = index
       this.page = 1
       this.getGoodsList()
     },
-    loadMore () {
+    loadMore () {      // 在执行v-infinite-scroll滚动到底部时触发的方法,这里就是当滚动到底部时,通过buy值禁止页面滚动
       this.busy = true
       this.page++
       this.getGoodsList(true)
     },
-    addCart (productId) {
+    addCart (productId) {  // 由于购物车中的数据被多个页面共享,所以购物车数量被定义在了store中
       this.$http.post('/goods/addCart', {productId})
       .then(res => {
         res = res.data
         if (res.status === '0') {
           this.mdShowCart = true
-          this.$store.commit('updateCartCount', 1)
+          this.$store.commit('updateCartCount', 1)   // 利用commit来调用store中的updateCartCount方法从而更新cartCount数据
         } else {
           this.mdShow = true
         }
       })
     },
-    closeModal () {
+    closeModal () {        // 关闭modal框
       this.mdShow = false
       this.mdShowCart = false
     }
