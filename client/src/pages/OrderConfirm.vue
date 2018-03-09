@@ -146,7 +146,7 @@ export default {
   },
   mixins: [Public],
   methods: {
-    init () {
+    init () {   // 从cartList中获取数据,筛选出选中的商品, 计算出总价
       this.$http.get('/users/cartList')
       .then(res => {
         res = res.data
@@ -172,7 +172,7 @@ export default {
       }).then(res => {
         res = res.data
         if (res.status === '0') {
-          this.$router.push({
+          this.$router.push({      // 支付成功跳转到订单成功页面
             path: '/orderSuccess?orderId=' + res.result.orderId
           })
         }
